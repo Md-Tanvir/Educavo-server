@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 client.connect((err) => {
   const coursesCollection = client.db("educavo").collection("courses");
   const reviewsCollection = client.db("educavo").collection("reviews");
+  const ordersCollection = client.db("educavo").collection("orders");
 
   // GET ALL COURSES
 
@@ -51,6 +52,21 @@ client.connect((err) => {
   app.get("/reviews", async (req, res) => {
     const result = await reviewsCollection.find({}).toArray();
     res.send(result);
+  });
+
+  // MAKING REVIEW DATA
+  app.post("/reviews", async (req, res) => {
+    const user = req.body;
+    const result = await reviewsCollection.insertOne(user);
+    res.send(result);
+  });
+
+  //GET ALL ORDERS
+
+  app.get("/allOrders", async (req, res) => {
+    const cursor = ordersCollection.find({});
+    const orders = await cursor.toArray();
+    res.send(orders);
   });
 });
 
