@@ -31,16 +31,16 @@ client.connect((err) => {
     const result = await coursesCollection.find({}).toArray();
     res.send(result);
   });
-//   ADD NEW COURSE
+  //   ADD NEW COURSE
   app.post("/addCourse", async (req, res) => {
     const result = await coursesCollection.insertOne(req.body);
     res.send(result);
   });
 
-  // DELETE ANY PRODUCT
+  // DELETE ANY COURSE
 
-  app.delete("/delteProduct/:id", async (req, res) => {
-    const result = await productsCollection.deleteOne({
+  app.delete("/deleteCourse/:id", async (req, res) => {
+    const result = await coursesCollection.deleteOne({
       _id: ObjectId(req.params.id),
     });
     res.send(result);
@@ -53,6 +53,8 @@ client.connect((err) => {
     res.send(result);
   });
 });
+
+
 
 app.listen(port, () => {
   console.log(`Server Is Running On Port:`, port);
