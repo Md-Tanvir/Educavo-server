@@ -25,6 +25,7 @@ client.connect((err) => {
   const coursesCollection = client.db("educavo").collection("courses");
   const reviewsCollection = client.db("educavo").collection("reviews");
   const ordersCollection = client.db("educavo").collection("orders");
+  const usersCollection = client.db("educavo").collection("users");
 
   // GET ALL COURSES
 
@@ -106,6 +107,40 @@ client.connect((err) => {
       .toArray();
     res.send(result);
   });
+
+   // MAKING USER COLLECTION
+   app.put("/users", async (req, res) => {
+    const user = req.body;
+    const filter = { email: user.email };
+    const options = { upsert: true };
+    const updateDoc = { $set: user };
+    const result = await usersCollection.updateOne(filter, updateDoc, options);
+    res.send(result);
+  });
+
+ //GIVING ADMIN ROLE
+ app.put("/users/admin", async (req, res) => {
+    const user = req.body;
+    const filter = { email: user.email };
+    const updateDoc = { $set: { role: "admin" } };
+    const result = await usersCollection.updateOne(filter, updateDoc);
+    res.send(result);
+  });
+
+  //SPECIAL FOR ADMIN
+  app.get("/users/:email", async (req, res) => {
+    const email = req.params.email;
+    const query = { email: email };
+    const user = await usersCollection.findOne(query);
+    let isAdmin = false;
+    if (user?.role === "admin") {
+      isAdmin = true;
+    }
+    res.send({ admin: isAdmin });
+  });
+
+
+
 });
 
 app.listen(port, () => {
