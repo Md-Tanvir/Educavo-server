@@ -75,9 +75,16 @@ client.connect((err) => {
     const orders = await cursor.toArray();
     res.send(orders);
   });
+
+  // DELETE ANY ORDER
+
+  app.delete("/delteOrder/:id", async (req, res) => {
+    const result = await ordersCollection.deleteOne({
+      _id: ObjectId(req.params.id),
+    });
+    res.send(result);
+  });
 });
-
-
 
 app.listen(port, () => {
   console.log(`Server Is Running On Port:`, port);
