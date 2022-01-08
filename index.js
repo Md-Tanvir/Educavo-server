@@ -84,7 +84,7 @@ client.connect((err) => {
     });
     res.send(result);
   });
-  
+
   // UPDATE ORDER STATUS
   app.put("/allOrders/:id", async (req, res) => {
     const id = req.params.id;
@@ -99,7 +99,13 @@ client.connect((err) => {
     res.json(result);
   });
 
-  
+  // LOGGED USER ORDERS
+  app.get("/myOrders/:email", async (req, res) => {
+    const result = await ordersCollection
+      .find({ email: req.params.email })
+      .toArray();
+    res.send(result);
+  });
 });
 
 app.listen(port, () => {
