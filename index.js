@@ -61,6 +61,13 @@ client.connect((err) => {
     res.send(result);
   });
 
+  // CONFIRM YOUR ORDER
+
+  app.post("/confirmOrder", async (req, res) => {
+    const result = await ordersCollection.insertOne(req.body);
+    res.send(result);
+  });
+
   //GET ALL ORDERS
 
   app.get("/allOrders", async (req, res) => {
