@@ -31,6 +31,20 @@ client.connect((err) => {
     const result = await coursesCollection.find({}).toArray();
     res.send(result);
   });
+//   ADD NEW COURSE
+  app.post("/addCourse", async (req, res) => {
+    const result = await coursesCollection.insertOne(req.body);
+    res.send(result);
+  });
+
+  // DELETE ANY PRODUCT
+
+  app.delete("/delteProduct/:id", async (req, res) => {
+    const result = await productsCollection.deleteOne({
+      _id: ObjectId(req.params.id),
+    });
+    res.send(result);
+  });
 
   // GET ALL REVIEWS
 
