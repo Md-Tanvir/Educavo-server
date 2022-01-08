@@ -21,6 +21,25 @@ app.get("/", (req, res) => {
   res.send("Educavooo Server Is Running");
 });
 
+client.connect((err) => {
+  const coursesCollection = client.db("educavo").collection("courses");
+  const reviewsCollection = client.db("educavo").collection("reviews");
+
+  // GET ALL COURSES
+
+  app.get("/courses", async (req, res) => {
+    const result = await coursesCollection.find({}).toArray();
+    res.send(result);
+  });
+
+  // GET ALL REVIEWS
+
+  app.get("/reviews", async (req, res) => {
+    const result = await reviewsCollection.find({}).toArray();
+    res.send(result);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server Is Running On Port:`, port);
 });
