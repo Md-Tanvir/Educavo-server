@@ -78,12 +78,27 @@ client.connect((err) => {
 
   // DELETE ANY ORDER
 
-  app.delete("/delteOrder/:id", async (req, res) => {
+  app.delete("/deleteOrder/:id", async (req, res) => {
     const result = await ordersCollection.deleteOne({
       _id: ObjectId(req.params.id),
     });
     res.send(result);
   });
+    // UPDATE ORDER STATUS
+    app.put("/allOrders/:id", async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id) };
+        const option = { upsert: true };
+        const updateStatus = { $set: { status: "Shipped" } };
+        const result = await ordersCollection.updateOne(
+          filter,
+          updateStatus,
+          option
+        );
+        res.json(result);
+      });
+    });
+
 });
 
 app.listen(port, () => {
